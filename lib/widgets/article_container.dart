@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qiita_search/models/article.dart';
 import 'package:intl/intl.dart';
+import 'package:qiita_search/screens/article_screen.dart';
 
 class ArticleContainer extends StatelessWidget {
   const ArticleContainer({
@@ -18,7 +19,11 @@ class ArticleContainer extends StatelessWidget {
         vertical: 16,
       ),
       child: GestureDetector(
-        onTap: () {},
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: ((context) => ArticleScreen(article: article)))
+          );
+        },
         child: Container(
           padding: const EdgeInsets.symmetric(
             horizontal: 20,

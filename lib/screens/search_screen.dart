@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:qiita_search/models/article.dart';
-import 'package:qiita_search/models/user.dart';
 import 'package:qiita_search/widgets/article_container.dart';
 
 class SearchScreen extends StatefulWidget {

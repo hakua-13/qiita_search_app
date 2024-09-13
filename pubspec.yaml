@@ -10,14 +10,18 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_dotenv: ^5.1.0
+  flutter_riverpod: ^2.5.1
   http: ^1.2.2
   intl: ^0.19.0
+  riverpod_annotation: ^2.3.5
   webview_flutter: ^4.8.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
+  build_runner: ^2.4.11
+  riverpod_generator: ^2.4.0
 
 flutter:
   uses-material-design: true

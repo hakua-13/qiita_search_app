@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:qiita_search/models/article.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:qiita_search/provider/articles_provider.dart';
 import 'package:qiita_search/widgets/article_container.dart';
 
-class SearchScreen extends StatefulWidget {
+class SearchScreen extends ConsumerWidget {
   const SearchScreen({super.key});
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final articles = ref.watch(articlesProvider);
+    final articlesNotifier = ref.watch(articlesProvider.notifier);
 
-class _SearchScreenState extends State<SearchScreen> {
-  List<Article> articles = [];
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Qiita Search'),
@@ -37,8 +32,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 hintText: '検索ワードを入力してください',
               ),
               onSubmitted: (String value) async {
-                final results = await searchQiita(value);
-                setState(() => articles = results);
+                await articlesNotifier.searchQiita(value);
               },
             ),
           ),
@@ -54,21 +48,4 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Future<List<Article>> searchQiita(String keyword) async {
-    final uri = Uri.http('qiita.com', '/api/v2/items', {
-      'query': 'title:$keyword',
-      'per_page': '10',
-    });
-    final String token = dotenv.env['QIITA_ACCESS_TOKEN'] ?? '';
-    final http.Response res = await http.get(uri, headers: {
-      'Authrization': 'Bearer $token',
-    });
-
-    if (res.statusCode == 200) {
-      final List<dynamic> body = jsonDecode(res.body);
-      return body.map((dynamic json) => Article.fromJson(json)).toList();
-    } else {
-      return [];
-    }
-  }
 }
